@@ -6,15 +6,15 @@ if (!_cao('is_sns_weixin')) {
     zb_wp_die('未开启微信登录功能', '非法访问');exit;
 }
 
-$opt = _cao('sns_weixin');
+$opt = function_exists('ripro_v5_get_sns_weixin') ? ripro_v5_get_sns_weixin() : (array) _cao('sns_weixin', array());
 
-if (empty($opt)) {
+if (empty($opt['app_id']) || empty($opt['app_secret'])) {
     zb_wp_die('请配置微信登录参数', '配置错误');exit;
 }
 
 $Config = array(
-    'app_id'     => trim($opt['app_id']),
-    'app_secret' => trim($opt['app_secret']),
+    'app_id'     => trim((string) $opt['app_id']),
+    'app_secret' => trim((string) $opt['app_secret']),
     'scope'      => null,
     'callback'   => get_oauth_permalink('weixin','callback'),
 );

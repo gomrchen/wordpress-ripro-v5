@@ -175,10 +175,10 @@ function load_ripto_theme_files( $is_debug = false ) {
         'template-walker.php',       // bootstrap 菜单类
         'template-seo.php',          // 内置 SEO
         'template-tags.php',         // 主题功能标签
+        'template-class.php',        // 主题 class（Cookie/Code 等，Shop 依赖）
+        '/core/template-core.php',   // 订单 + 支付核心 Shop/Pay
         'template-shop.php',         // 主题 shop
-        'template-class.php',        // 主题 class
         'template-open-source.php',  // 开源版前台链接对齐
-        '/core/template-core.php'    // 主题 class
     );
 
     foreach ($includes as $file) {

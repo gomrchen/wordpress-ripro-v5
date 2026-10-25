@@ -80,6 +80,11 @@ $target_language = isset($translate_js_map[$site_locale_setting]) ? $translate_j
 
 <script src="<?php echo get_template_directory_uri();?>/assets/js/translate.js"></script>
 <script>
+    // 勿翻译/改动 Font Awesome 的 <i> 与图标区域，否则全站图标会消失
+    if (typeof translate !== 'undefined' && translate.ignore) {
+        translate.ignore.tag.push('i', 'svg');
+        translate.ignore.class.push('rollbar', 'division-icon', 'notranslate', 'fa', 'fas', 'far', 'fab');
+    }
     translate.service.use('client.edge'); // 设置机器翻译服务通道
     translate.listener.start(); // 开启页面元素动态监控
     

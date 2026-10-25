@@ -85,6 +85,10 @@ function zb_scripts() {
     // 加载字体图标样式
     wp_enqueue_style('csf-fa5', $cdn_src['fw'], array(), '5.15.4');
     wp_enqueue_style('csf-fa5-v4-shims', $cdn_src['fw4'], array(), '5.15.4');
+    if ($cdn_mod !== 'theme') {
+        wp_style_add_data('csf-fa5', 'crossorigin', 'anonymous');
+        wp_style_add_data('csf-fa5-v4-shims', 'crossorigin', 'anonymous');
+    }
 
 
     //主题样式
