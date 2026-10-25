@@ -1,0 +1,77 @@
+# 目录对齐：
+#   ./wordpress          → 站点源码（热改）
+#   ./wordpress/wp-content → 主题/插件/uploads
+#   ./data/mysql         → 数据库文件
+#   ./php/uploads.ini    → PHP 上传限制
+#   ./nginx/default.conf → Nginx 站点配置
+# 启动：docker compose up -d
+# 访问：http://localhost:8080
+
+name: wordpress-9.1
+
+services:
+  db:
+    image: mysql:8.4
+    container_name: wp-db
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-wordpress}
+      MYSQL_USER: ${MYSQL_USER:-wordpress}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-wordpress}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass}
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    ports:
+      # 仅本机可连，避免局域网误暴露
+      - "127.0.0.1:${DB_PORT:-13306}:3306"
+    healthcheck:
+      # mysql:8.4 官方镜像无 healthcheck.sh，用 mysqladmin
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  wordpress:
+    image: wordpress:php8.2-fpm
+    container_name: wp-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: ${MYSQL_USER:-wordpress}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-wordpress}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE:-wordpress}
+      WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX:-wp_}
+      WORDPRESS_DEBUG: ${WORDPRESS_DEBUG:-1}
+      # 本机挂载开发：后台更新/装主题不走 FTP
+      WORDPRESS_CONFIG_EXTRA: |
+        define('FS_METHOD', 'direct');
+        define('RIPRO_LOCAL_DOCKER', true);
+    volumes:
+      - ./wordpress:/var/www/html
+      - ./php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+    # 不对外暴露 9000，只给 nginx 内网访问
+    expose:
+      - "9000"
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: wp-nginx
+    restart: unless-stopped
+    depends_on:
+      - wordpress
+    ports:
+      - "${WP_PORT:-8080}:80"
+    volumes:
+      - ./wordpress:/var/www/html:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
