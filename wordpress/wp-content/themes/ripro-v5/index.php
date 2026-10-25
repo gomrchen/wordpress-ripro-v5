@@ -21,7 +21,7 @@ if (is_active_sidebar('home-center')) {
         'after_widget'  => '</div>',
     ), array());
 
-    echo '<div class="container text-white bg-dark bg-opacity-75 text-center rounded-2 p-4"> <p>重要提示：请在 <a class="text-warning" href="' . esc_url(admin_url('widgets.php')) . '">后台-外观-小工具</a> 设置拖拽【首页】小工具到首页模块框配置首页布局。</p><p>WP自带小工具高性能实现首页模块可以无限复制拖拽排序，单独设置各自参数，当前首页为默认显示输出，设置首页模块后则自动被替换，<p class="text-center"><a class="btn btn-sm btn-outline-light" href="' . esc_url(admin_url('widgets.php')) . '">前往小工具配置首页模块</a></p></p> </div>';
+    echo '<div class="container text-white bg-dark bg-opacity-75 text-center rounded-2 p-4"> <p>重要提示：请在 <a class="text-warning" href="' . admin_url('widgets.php') . '">后台-外观-小工具</a> 设置拖拽【首页】小工具到首页模块框配置首页布局。</p><p>WP自带小工具高性能实现首页模块可以无限复制拖拽排序，单独设置各自参数，当前首页为默认显示输出，设置首页模块后则自动被替换，<p class="text-center"><a class="btn btn-sm btn-outline-light" target="_blank" href="https://ritheme.com/document/1028.html">首页模块配置教程及截图</a></p></p> </div>';
 
 }
 

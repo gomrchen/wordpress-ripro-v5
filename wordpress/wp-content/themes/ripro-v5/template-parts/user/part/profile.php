@@ -100,12 +100,10 @@ if ($unsetoauth =='qq' || $unsetoauth =='weixin') {
                   }
 
                   if (_cao('is_sns_weixin',false)) {
-                    $sns_wx = function_exists('ripro_v5_get_sns_weixin') ? ripro_v5_get_sns_weixin() : (array) _cao('sns_weixin', array());
-                    $wx_oauth = (isset($sns_wx['sns_weixin_mod']) && $sns_wx['sns_weixin_mod'] === 'mp') ? 'mpweixin' : 'weixin';
                     if (!empty(get_user_meta($current_user->ID,'open_weixin_openid',true))) {
-                      echo '<a href="'.get_uc_menu_link('profile').'?unsetoauth=weixin" class="btn btn-danger mx-2"><i class="fab fa-weixin me-1"></i>'.__('解绑微信登录', 'ripro').'</a>';
+                      echo '<a href="'.get_uc_menu_link('profile').'?unsetoauth=weixin" class="btn btn-danger mx-2"><i class="fab fa-qq me-1"></i>'.__('解绑微信登录', 'ripro').'</a>';
                     }else{
-                      echo '<a href="'.get_oauth_permalink($wx_oauth).'" class="btn btn-success mx-2"><i class="fab fa-weixin me-1"></i>'.__('绑定微信登录', 'ripro').'</a>';
+                      echo '<a href="'.get_oauth_permalink('weixin').'" class="btn btn-success mx-2"><i class="fab fa-weixin me-1"></i>'.__('绑定微信登录', 'ripro').'</a>';
                     }
                   }
                   

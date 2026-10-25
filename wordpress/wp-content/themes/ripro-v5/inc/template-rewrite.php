@@ -197,7 +197,7 @@ class ZB_Rewrite {
                     $pay_file = strtolower(get_query_var('pay_callback_file'));
 
                     // 校验文件名合法性：只允许包含标准的支付回调逻辑文件名
-                    $allowed_pay_files = array('notify', 'notify_wx', 'notify_ali', 'return', 'callback', 'cancel');
+                    $allowed_pay_files = array('notify','notify_wx','notify_ali', 'return', 'callback');
                     if (empty($pay_type) || empty($pay_file) || !in_array($pay_file, $allowed_pay_files, true)) {
                         return $template;
                     }

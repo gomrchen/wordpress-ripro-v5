@@ -6,15 +6,15 @@ if (!_cao('is_sns_qq')) {
     zb_wp_die('未开启QQ登录功能', '非法访问');exit;
 }
 
-$opt = (array) _cao('sns_qq', array());
+$opt = _cao('sns_qq');
 
-if (empty($opt['app_id']) || empty($opt['app_secret'])) {
+if (empty($opt)) {
     zb_wp_die('请配置QQ登录参数', '配置错误');exit;
 }
 
 $Config = array(
-    'app_id'     => trim((string) $opt['app_id']),
-    'app_secret' => trim((string) $opt['app_secret']),
+    'app_id'     => trim($opt['app_id']),
+    'app_secret' => trim($opt['app_secret']),
     'scope'      => 'get_user_info',
     'callback'   => get_oauth_permalink('qq','callback'),
 );

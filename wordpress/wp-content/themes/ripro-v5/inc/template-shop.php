@@ -137,24 +137,24 @@ function get_site_author_aff_rate() {
 function get_site_vip_options() {
     $options     = _cao('site_vip_options', array());
     $vip_options = array();
-    $vip_group   = array('no', 'vip', 'boosvip');
-    $default_names = array(
-        'no'      => __('普通用户', 'ripro'),
-        'vip'     => __('VIP会员', 'ripro'),
-        'boosvip' => __('永久VIP', 'ripro'),
-    );
+
+    if (empty($options)) {
+        return $vip_options;
+    }
+    //定义天数
+    $vip_group = ['no','vip','boosvip'];
 
     foreach ($vip_group as $key) {
-        $name    = (is_array($options) && isset($options[$key . '_name'])) ? $options[$key . '_name'] : $default_names[$key];
-        $downnum = (is_array($options) && isset($options[$key . '_downnum'])) ? $options[$key . '_downnum'] : 0;
-        $desc    = (is_array($options) && isset($options[$key . '_desc'])) ? $options[$key . '_desc'] : '';
-        $desc    = empty($desc) ? array() : explode("\n", $desc);
-        $vip_options[$key] = array(
-            'key'     => $key,
-            'name'    => esc_html($name),
-            'desc'    => $desc,
-            'downnum' => absint($downnum),
-        );
+        $name = (isset($options[$key . '_name'])) ? $options[$key . '_name'] : '';
+        $downnum = (isset($options[$key . '_downnum'])) ? $options[$key . '_downnum'] : 0;
+        $desc = (isset($options[$key . '_desc'])) ? $options[$key . '_desc'] : '';
+        $desc = empty($desc) ? [] : explode("\n", $desc);
+        $vip_options[$key] = [
+            'key'     => $key, //标识
+            'name'    => esc_html($name), //名称
+            'desc'    => $desc, //介绍
+            'downnum' => absint($downnum), //下载次数
+        ];
     }
     return $vip_options;
 }
@@ -262,7 +262,7 @@ function get_user_vip_type($user_id) {
     $vip_options = get_site_vip_options();
     $user_type   = get_user_meta($user_id, 'cao_user_type', true);
     if (empty($user_type) || !isset($vip_options[$user_type])) {
-        return isset($vip_options['no']['key']) ? $vip_options['no']['key'] : 'no';
+        return $vip_options['no']['key'];
     }
     $current_date = wp_date('Y-m-d');
     $vip_end_date = get_user_vip_end_date($user_id);
@@ -274,14 +274,14 @@ function get_user_vip_type($user_id) {
     }
 
     if ($user_type === 'vip' && $vip_end_date === '9999-09-09') {
-        return isset($vip_options['boosvip']['key']) ? $vip_options['boosvip']['key'] : 'boosvip';
+        return $vip_options['boosvip']['key'];
     }
 
     if ($user_type === 'vip' && $end_time > $current_time) {
-        return isset($vip_options['vip']['key']) ? $vip_options['vip']['key'] : 'vip';
+        return $vip_options['vip']['key'];
     }
 
-    return isset($vip_options['no']['key']) ? $vip_options['no']['key'] : 'no';
+    return $vip_options['no']['key'];
 }
 
 //获取用户VIP数据
@@ -1554,15 +1554,14 @@ function zb_pay_request_success($order) {
             return false;
         }
 
-        $recharge_num = 0;
         if ($order->pay_price > 0) {
-            $recharge_num = site_convert_amount($order->pay_price, 'coin');
-            change_user_coin_balance($order->user_id, $recharge_num, '+');
+            $recharge_num = site_convert_amount($order->pay_price,'coin');
+            $recharge = change_user_coin_balance($order->user_id, $recharge_num, '+');
         }
 
         //添加网站动态
         ZB_Dynamic::add([
-            'info' => sprintf(__('成功充值%s%s', 'ripro'), $recharge_num, get_site_coin_name()),
+            'info' => sprintf( __('成功充值%s%s', 'ripro'),$recharge_num,get_site_coin_name()),
             'uid' => $order->user_id,
             'href' => get_uc_menu_link('coin'),
         ]);

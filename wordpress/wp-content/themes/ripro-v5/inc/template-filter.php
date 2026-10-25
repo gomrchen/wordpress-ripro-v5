@@ -49,9 +49,6 @@ function custom_head_css() {
 
     //背景颜色配置
     $body_background = _cao('site_background', array());
-    if (!is_array($body_background)) {
-        $body_background = array();
-    }
     $__css           = '';
     foreach ($body_background as $property => $value) {
         if (!empty($value)) {
@@ -575,28 +572,13 @@ add_filter( 'ocdi/import_files', 'zb_ocdi_import_files' );
 
 
 function zb_ocdi_after_import_setup() {
-    if (defined('_OPTIONS_PRE')) {
+    
+    if (false) {
         $file_url = 'https://ripro.rizhuti.com/ripro-demo-file/ripro-v5-options.json';
-        $json_data  = wp_remote_retrieve_body(wp_remote_get($file_url, array('timeout' => 60)));
-        $import_data = json_decode($json_data, true);
-        if (is_array($import_data) && !empty($import_data)) {
-            $home = home_url('/');
-            array_walk_recursive($import_data, function (&$value) use ($home) {
-                if (!is_string($value)) {
-                    return;
-                }
-                $value = str_replace(
-                    array('http://cao.ylit.cc/', 'http://cao.ylit.cc', 'https://ripro.rizhuti.com'),
-                    array($home, rtrim($home, '/'), rtrim($home, '/')),
-                    $value
-                );
-            });
-            update_option(_OPTIONS_PRE, $import_data);
-            delete_option('ripro_v5_open_source_opts_v1');
-            if (function_exists('ripro_v5_migrate_open_source_options_once')) {
-                ripro_v5_migrate_open_source_options_once();
-            }
-        }
+        $json_data = file_get_contents( $file_url );
+        $import_data  = json_decode( $json_data, true );
+        $options = ( is_array( $import_data ) && ! empty( $import_data ) ) ? $import_data : array();
+        update_option( _OPTIONS_PRE , $options); //更新主题设置
     }
     
     // Assign menus to their locations.

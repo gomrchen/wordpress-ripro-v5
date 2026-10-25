@@ -5,6 +5,7 @@ defined('ABSPATH') || exit;
 #主题版本信息
 define('_THEME_VERSION', '10.5'); //主题版本
 define('_THEME_DEBUG', 0); //调试模式控制切勿开启
+define('_THEME_TOKEN', 'JFAkQnlES01YUUpEQ0tkVmZwbjk5NGw4VUtqMEVpaWpCMA=='); //主题授权TOKEN 切勿修改
 
 ###############################################################################
 
@@ -175,10 +176,9 @@ function load_ripto_theme_files( $is_debug = false ) {
         'template-walker.php',       // bootstrap 菜单类
         'template-seo.php',          // 内置 SEO
         'template-tags.php',         // 主题功能标签
-        'template-class.php',        // 主题 class（Cookie/Code 等，Shop 依赖）
-        '/core/template-core.php',   // 订单 + 支付核心 Shop/Pay
+        'template-class.php',        // 主题 class（Cookie/Code，Shop 依赖）
+        'core/template-core.php',    // 订单 + 支付核心 Shop/Pay（开源可读）
         'template-shop.php',         // 主题 shop
-        'template-open-source.php',  // 开源版前台链接对齐
     );
 
     foreach ($includes as $file) {

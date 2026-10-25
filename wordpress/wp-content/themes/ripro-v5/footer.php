@@ -10,13 +10,7 @@ Footer START -->
 		<?php get_template_part( 'template-parts/footer/widget');?>
 
 		<div class="text-center small w-100">
-			<div><?php
-				$copyright = _cao('site_copyright_text', '');
-				if ($copyright === '') {
-					$copyright = ripro_v5_default_copyright_html();
-				}
-				echo apply_filters('ripro_footer_copyright_html', $copyright);
-			?></div>
+			<div><?php echo _cao('site_copyright_text','Copyright © 2023 <a target="_blank" href="http://ritheme.com/">RiPro-V5</a> - All rights reserved');?></div>
 			<div class=""><?php echo _cao('site_ipc_text','') . _cao('site_ipc2_text','');?></div>
 		</div>
 
@@ -34,7 +28,7 @@ Footer END -->
 
 <!-- Back to top rollbar-->
 <?php get_template_part('template-parts/footer/rollbar');?>
-<div class="back-top notranslate" translate="no" role="button" tabindex="0" aria-label="<?php esc_attr_e('返回顶部', 'ripro'); ?>"><i class="fas fa-caret-up" aria-hidden="true"></i></div>
+<div class="back-top"><i class="fas fa-caret-up"></i></div>
 
 <!-- m-navbar -->
 <?php get_template_part('template-parts/footer/m-navbar');?>
@@ -80,11 +74,6 @@ $target_language = isset($translate_js_map[$site_locale_setting]) ? $translate_j
 
 <script src="<?php echo get_template_directory_uri();?>/assets/js/translate.js"></script>
 <script>
-    // 勿翻译/改动 Font Awesome 的 <i> 与图标区域，否则全站图标会消失
-    if (typeof translate !== 'undefined' && translate.ignore) {
-        translate.ignore.tag.push('i', 'svg');
-        translate.ignore.class.push('rollbar', 'division-icon', 'notranslate', 'fa', 'fas', 'far', 'fab');
-    }
     translate.service.use('client.edge'); // 设置机器翻译服务通道
     translate.listener.start(); // 开启页面元素动态监控
     

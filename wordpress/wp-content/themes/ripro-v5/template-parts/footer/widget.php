@@ -19,8 +19,8 @@ if (empty(_cao('is_site_footer_widget',true))) {
   <div class="col-md-2">
     <h4 class="widget-title"><?php _e('快速导航', 'ripro');?></h4>
     <ul class="list-unstyled widget-links">
-      <?php foreach (apply_filters('ripro_footer_widget_links', _cao('site_footer_widget_link1', array())) as $item) {
-        printf('<li><a href="%s">%s</a></li>', esc_url($item['href']), esc_html($item['title']));
+      <?php foreach (_cao('site_footer_widget_link1',array()) as $item) {
+        printf('<li><a href="%s">%s</a></li>',$item['href'],$item['title']);
       }?>
     </ul>
   </div>
@@ -28,15 +28,15 @@ if (empty(_cao('is_site_footer_widget',true))) {
   <div class="col-md-2">
     <h4 class="widget-title"><?php _e('关于本站', 'ripro');?></h4>
     <ul class="list-unstyled widget-links">
-      <?php foreach (apply_filters('ripro_footer_widget_links', _cao('site_footer_widget_link2', array())) as $item) {
-        printf('<li><a href="%s">%s</a></li>', esc_url($item['href']), esc_html($item['title']));
+      <?php foreach (_cao('site_footer_widget_link2',array()) as $item) {
+        printf('<li><a href="%s">%s</a></li>',$item['href'],$item['title']);
       }?>
     </ul>
   </div>
 
   <div class="col-md-4">
     <h4 class="widget-title"><?php _e('联系我们', 'ripro');?></h4>
-    <div class=""><?php echo apply_filters('ripro_footer_contact_html', (string) _cao('site_contact_desc', '')); ?></div>
+    <div class=""><?php echo _cao('site_contact_desc');?></div>
   </div>
 </div>
 

@@ -6,12 +6,7 @@
 
 header('Content-type:text/html; Charset=utf-8');
 
-if (empty($_GET)) {
-    wp_redirect(home_url());
-    exit;
-}
-
-$pay_type = isset($_GET['type']) ? $_GET['type'] : '';
+$pay_type = $_GET['type'];
 switch ($pay_type) {
 case 'wxpay':
     $_Config = _cao('epay_weixin', array());
@@ -25,8 +20,7 @@ default:
 }
 
 if (empty($_Config['pid']) || empty($_Config['key'])) {
-    wp_redirect(home_url());
-    exit;
+    exit('error');
 }
 
 // 接收异步通知,无需关注验签动作,已自动处理
@@ -59,8 +53,18 @@ if ($epay->verifyReturn()) {
 
 
     $order = ZB_Shop::get_order(wp_unslash($out_trade_no));
-    wp_redirect(ZB_Shop::order_success_redirect_url($order));
-    exit;
+    if ($order) {
+        if ($order->order_type == 1) {
+            $back_url = get_permalink($order->post_id);
+        } elseif ($order->order_type == 2) {
+            $back_url = get_uc_menu_link('coin');
+        } elseif ($order->order_type == 3) {
+            $back_url = get_uc_menu_link('vip');
+        } else {
+            $back_url = home_url();
+        }
+    }
+    wp_redirect($back_url);exit;
     
 }
 

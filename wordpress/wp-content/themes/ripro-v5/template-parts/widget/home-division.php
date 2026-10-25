@@ -7,7 +7,7 @@ if (empty($args)) {
 ?>
 
 
-<section class="container notranslate" translate="no">
+<section class="container">
 	<div class="row row-cols-2 row-cols-lg-4 g-2 g-md-4">
 
 		<?php foreach ($args['div_data'] as $key => $item) : ?>

@@ -1,9 +1,12 @@
 RiPro V5 inc/core 开源说明
 ================================
 
-运行时核心（与原厂 inc/core 职责一致）：
-- class-zb-shop.php   订单表与支付回调
-- class-zb-pay.php    支付网关（Yurun SDK + 虎皮椒/讯虎/易支付/PayPal）
-- template-core.php   仅加载 Shop + Pay
+按原厂契约还原（可读，无授权远程校验）：
+- class-zb-shop.php   订单表 CRUD / 已购判断 / pay_notfiy_callback / 回跳
+- class-zb-pay.php    支付宝/微信/虎皮椒/讯虎/易支付/PayPal
+- template-core.php   仅 require Shop + Pay
 
-演示对齐 CLI 见 ../tools/README.txt
+故意不还原：
+- ZB_Lic（授权/激活/远程校验）—— 开源版不需要
+
+方法清单与混淆版 Shop/Pay 公开 API 对齐（缺 0）。

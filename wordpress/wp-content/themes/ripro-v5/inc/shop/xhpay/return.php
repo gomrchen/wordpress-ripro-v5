@@ -10,14 +10,10 @@ if (empty($_GET['pay_type']) || empty($_GET['out_trade_no'])) {
     wp_redirect(home_url());exit;
 }
 
-$pay_type = isset($_GET['pay_type']) ? $_GET['pay_type'] : '';
-if ($pay_type === 'alipay') {
+if ($_GET['pay_type'] == 'alipay') {
     $_Config = _cao('xunhupay_alipay');
-} elseif ($pay_type === 'wechat') {
+} elseif ($_GET['pay_type'] == 'wechat') {
     $_Config = _cao('xunhupay_weixin');
-} else {
-    wp_redirect(home_url());
-    exit;
 }
 
 if (empty($_Config['mchid']) || empty($_Config['private_key'])) {
@@ -28,13 +24,12 @@ require_once get_template_directory() . '/inc/plugins/xunhupay/xhpay.class.php';
 
 $xhpay = new Xhpay($_Config);
 
-$data   = $xhpay->sign(array('out_trade_no' => $_GET['out_trade_no']));
-$result = array();
+$data = $xhpay->sign(array('out_trade_no' => $_GET['out_trade_no']));
 
 try {
     $result = $xhpay->query($data);
 } catch (Exception $e) {
-    // 查询失败仍按订单号回跳
+    // exit;
 }
 
 if (isset($result['return_code']) && isset($result['status']) && isset($result['sign'])) {
@@ -52,14 +47,21 @@ if (isset($result['return_code']) && isset($result['status']) && isset($result['
 
 }
 
-$out_trade_no = '';
-if (!empty($result['out_trade_no'])) {
-    $out_trade_no = $result['out_trade_no'];
-} elseif (!empty($_GET['out_trade_no'])) {
-    $out_trade_no = wp_unslash($_GET['out_trade_no']);
+//商户本地订单号
+$order = ZB_Shop::get_order(wp_unslash($result['out_trade_no']));
+
+if ($order) {
+
+    if ($order->order_type == 1) {
+        $back_url = get_permalink($order->post_id);
+    } elseif ($order->order_type == 2) {
+        $back_url = get_uc_menu_link('coin');
+    } elseif ($order->order_type == 3) {
+        $back_url = get_uc_menu_link('vip');
+    } else {
+        $back_url = home_url();
+    }
+
 }
 
-$order = ($out_trade_no !== '') ? ZB_Shop::get_order($out_trade_no) : null;
-
-wp_redirect(ZB_Shop::order_success_redirect_url($order));
-exit;
+wp_redirect($back_url);exit;

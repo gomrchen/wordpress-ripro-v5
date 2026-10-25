@@ -1326,4 +1326,34 @@ function remove_pagination_route($url) {
 }
 
 
+/**
+ * 授权页面
+ * @Author Dadong2g
+ * @date   2022-04-18
+ * @return [type]
+ */
+function riadmin_license_page() {
+
+    $is_acv = !empty($GLOBALS['ripro_is_activ']);
+
+    $disabled = ($is_acv) ? "" : "";
+    $value    = ($is_acv) ? "****************" : "";
+    $button   = ($is_acv) ? "恭喜，您已成功激活本站" : "点此激活授权";
+
+    $html = '<div class="theme-license-warp">';
+    if ($is_acv) {
+        $html .= '<div class="license-icon"></div>';
+    }
+    $html .= sprintf('<p><a href="https://ritheme.com/" target="_blank">RiTheme.com-官网</a>->会员ID</p><input id="theme_lic_id" type="text" value="%s" %s />', $value, $disabled);
+    $html .= sprintf('<p><a href="https://ritheme.com/" target="_blank">RiTheme.com-官网</a>->授权码</p><input id="theme_lic_key" type="text" value="%s" %s />', $value, $disabled);
+
+    $html .= sprintf('<p>授权信息激活后自动删除，不会储存到本地，可有效防止被盗用复制，中途修改域名需重新激活</p><button id="theme_act_btn" class="button button-primary" type="button" data-text="%s" %s>%s</button>', $button, $disabled, $button);
+
+    $html .= '</div>';
+
+    echo $html;
+
+}
+
+
 ################################################################

@@ -4,20 +4,20 @@
 
 defined('WPINC') || exit;
 
-$opt = function_exists('ripro_v5_get_sns_weixin') ? ripro_v5_get_sns_weixin() : (array) _cao('sns_weixin', array());
+$opt = _cao('sns_weixin');
 
-if (empty($opt['mp_app_id']) || empty($opt['mp_app_secret']) || empty($opt['mp_app_token'])) {
+if (empty($opt) || empty($opt['mp_app_id']) || empty($opt['mp_app_secret']) || empty($opt['mp_app_token'])) {
     zb_wp_die('请配置微信公众号登录参数', '配置错误');exit;
 }
 
 //配置参数
 $Config = array(
-    'app_id'         => trim((string) $opt['mp_app_id']),
-    'app_secret'     => trim((string) $opt['mp_app_secret']),
-    'token'          => trim((string) $opt['mp_app_token']),
-    'sns_weixin_mod' => trim((string) $opt['sns_weixin_mod']),
+    'app_id'     => trim($opt['mp_app_id']),
+    'app_secret' => trim($opt['mp_app_secret']),
+    'token'      => trim($opt['mp_app_token']),
+    'sns_weixin_mod' => trim($opt['sns_weixin_mod']),
     // 'is_bind_open' => boolval($opt['is_mp_bind_open']),
-    'callback'       => esc_url(home_url('/oauth/mpweixin/callback')),
+    'callback'   => esc_url(home_url('/oauth/mpweixin/callback')),
 );
 
 

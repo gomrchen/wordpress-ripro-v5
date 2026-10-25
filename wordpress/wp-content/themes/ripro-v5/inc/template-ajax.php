@@ -85,9 +85,9 @@ class ZB_Ajax {
 
         $this->valid_nonce_ajax(); #安全验证
         
-        $opt = function_exists('ripro_v5_get_sns_weixin') ? ripro_v5_get_sns_weixin() : (array) _cao('sns_weixin', array());
+        $opt = _cao('sns_weixin');
 
-        if (empty($opt['mp_app_id']) || empty($opt['mp_app_secret']) || empty($opt['mp_app_token'])) {
+        if (empty($opt) || empty($opt['mp_app_id']) || empty($opt['mp_app_secret']) || empty($opt['mp_app_token'])) {
             wp_send_json(array(
                 'status' => 0,
                 'msg'    => __('请配置微信公众号登录参数', 'ripro'),
@@ -96,11 +96,11 @@ class ZB_Ajax {
 
         //配置参数
         $Config = array(
-            'app_id'         => trim((string) $opt['mp_app_id']),
-            'app_secret'     => trim((string) $opt['mp_app_secret']),
-            'token'          => trim((string) $opt['mp_app_token']),
-            'sns_weixin_mod' => trim((string) $opt['sns_weixin_mod']),
-            'callback'       => esc_url(home_url('/oauth/mpweixin/callback')),
+            'app_id'     => trim($opt['mp_app_id']),
+            'app_secret' => trim($opt['mp_app_secret']),
+            'token'      => trim($opt['mp_app_token']),
+            'sns_weixin_mod' => trim($opt['sns_weixin_mod']),
+            'callback'   => esc_url(home_url('/oauth/mpweixin/callback')),
         );
 
         //实例化公众号登录类
@@ -151,9 +151,9 @@ class ZB_Ajax {
             ));
         }
 
-        $opt = function_exists('ripro_v5_get_sns_weixin') ? ripro_v5_get_sns_weixin() : (array) _cao('sns_weixin', array());
+        $opt = _cao('sns_weixin');
 
-        if (empty($opt['mp_app_id']) || empty($opt['mp_app_secret']) || empty($opt['mp_app_token'])) {
+        if (empty($opt) || empty($opt['mp_app_id']) || empty($opt['mp_app_secret']) || empty($opt['mp_app_token'])) {
             wp_send_json(array(
                 'status' => 0,
                 'msg'    => __('请配置微信公众号登录参数', 'ripro'),
@@ -162,17 +162,17 @@ class ZB_Ajax {
 
         //配置参数
         $Config = array(
-            'app_id'         => trim((string) $opt['mp_app_id']),
-            'app_secret'     => trim((string) $opt['mp_app_secret']),
-            'token'          => trim((string) $opt['mp_app_token']),
-            'sns_weixin_mod' => trim((string) $opt['sns_weixin_mod']),
-            'callback'       => esc_url(home_url('/oauth/mpweixin/callback')),
+            'app_id'     => trim($opt['mp_app_id']),
+            'app_secret' => trim($opt['mp_app_secret']),
+            'token'      => trim($opt['mp_app_token']),
+            'sns_weixin_mod' => trim($opt['sns_weixin_mod']),
+            'callback'   => esc_url(home_url('/oauth/mpweixin/callback')),
         );
 
         //实例化公众号登录类
         $mp_weixin = new Mp_WeChat_Login($Config['app_id'], $Config['app_secret'], $Config['token']);
 
-        $menu_opt = isset($opt['custom_wxmenu_opt']) ? $opt['custom_wxmenu_opt'] : array();
+        $menu_opt = $opt['custom_wxmenu_opt'];
 
         if (empty($menu_opt) || !is_array($menu_opt)) {
             wp_send_json(array(
