@@ -117,10 +117,6 @@ class ZB_Shop {
     public static function pay_notfiy_callback($order_trade_no, $pay_trade_no) {
         global $wpdb;
 
-        if (empty($GLOBALS['ripro_is_activ'])) {
-            return false;
-        }
-
         if (empty($order_trade_no) || empty($pay_trade_no) || empty($wpdb->cao_order_tbl)) {
             return false;
         }
@@ -149,5 +145,23 @@ class ZB_Shop {
         do_action('site_pay_order_success', $order);
 
         return true;
+    }
+
+    /** 支付完成同步回跳地址（与各渠道 return 脚本一致） */
+    public static function order_success_redirect_url($order) {
+        if (empty($order)) {
+            return home_url('/');
+        }
+        $type = (int) $order->order_type;
+        if ($type === 1) {
+            return get_permalink($order->post_id);
+        }
+        if ($type === 2) {
+            return get_uc_menu_link('coin');
+        }
+        if ($type === 3) {
+            return get_uc_menu_link('vip');
+        }
+        return home_url('/');
     }
 }

@@ -10,7 +10,13 @@ Footer START -->
 		<?php get_template_part( 'template-parts/footer/widget');?>
 
 		<div class="text-center small w-100">
-			<div><?php echo _cao('site_copyright_text','Copyright © 2023 <a target="_blank" href="http://ritheme.com/">RiPro-V5</a> - All rights reserved');?></div>
+			<div><?php
+				$copyright = _cao('site_copyright_text', '');
+				if ($copyright === '') {
+					$copyright = ripro_v5_default_copyright_html();
+				}
+				echo apply_filters('ripro_footer_copyright_html', $copyright);
+			?></div>
 			<div class=""><?php echo _cao('site_ipc_text','') . _cao('site_ipc2_text','');?></div>
 		</div>
 
@@ -28,7 +34,7 @@ Footer END -->
 
 <!-- Back to top rollbar-->
 <?php get_template_part('template-parts/footer/rollbar');?>
-<div class="back-top"><i class="fas fa-caret-up"></i></div>
+<div class="back-top notranslate" translate="no" role="button" tabindex="0" aria-label="<?php esc_attr_e('返回顶部', 'ripro'); ?>"><i class="fas fa-caret-up" aria-hidden="true"></i></div>
 
 <!-- m-navbar -->
 <?php get_template_part('template-parts/footer/m-navbar');?>

@@ -43,23 +43,10 @@ if ($final['ACK'] == 'Success' && isset($final['TOKEN'])) {
     ZB_Shop::pay_notfiy_callback($out_trade_no, $trade_no);
 
     $order = ZB_Shop::get_order(wp_unslash($pp_order['INVNUM']));
-
-    if ($order) {
-
-        if ($order->order_type == 1) {
-            $back_url = get_permalink($order->post_id);
-        } elseif ($order->order_type == 2) {
-            $back_url = get_uc_menu_link('coin');
-        } elseif ($order->order_type == 3) {
-            $back_url = get_uc_menu_link('vip');
-        } else {
-            $back_url = home_url();
-        }
-
-    }
-
-    wp_redirect($back_url);exit;
+    wp_redirect(ZB_Shop::order_success_redirect_url($order));
+    exit;
 
 }
 
-wp_redirect(home_url());exit;
+wp_redirect(home_url());
+exit;

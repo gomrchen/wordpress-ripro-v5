@@ -49,6 +49,9 @@ function custom_head_css() {
 
     //背景颜色配置
     $body_background = _cao('site_background', array());
+    if (!is_array($body_background)) {
+        $body_background = array();
+    }
     $__css           = '';
     foreach ($body_background as $property => $value) {
         if (!empty($value)) {

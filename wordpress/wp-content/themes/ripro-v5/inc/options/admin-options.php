@@ -947,7 +947,7 @@ CSF::createSection($prefix, array(
                 ),
                 array(
                     'title' => '会员介绍',
-                    'icon'  => 'fa fa-diamond',
+                    'icon'  => 'fas fa-gem',
                     'href'  => home_url('/vip-prices'),
                 ),
                 array(
@@ -956,9 +956,9 @@ CSF::createSection($prefix, array(
                     'href'  => 'http://wpa.qq.com/msgrd?v=3&uin=6666666&site=qq&menu=yes',
                 ),
                 array(
-                    'title' => '购买主题',
-                    'icon'  => 'fab fa-shopware',
-                    'href'  => 'https://ritheme.com/',
+                    'title' => '工单反馈',
+                    'icon'  => 'fas fa-life-ring',
+                    'href'  => home_url('/user/ticket'),
                 ),
             ),
         ),
@@ -1060,7 +1060,7 @@ CSF::createSection($prefix, array(
             'type'     => 'textarea',
             'title'    => '底部联系我们介绍',
             'sanitize' => false,
-            'default'  => '<img width="80" height="80" src="'.get_template_directory_uri() . '/assets/img/ritheme-qr.png'.'" style="float: left;" title="二维码"><img width="80" height="80" src="'.get_template_directory_uri() . '/assets/img/ritheme-qr.png'.'" style="float: left;" title="二维码">如有BUG或建议可与我们在线联系或登录本站账号进入个人中心提交工单。',
+            'default'  => '<p>如有问题请登录本站账号，进入 <a href="' . esc_url(home_url('/user/ticket')) . '">个人中心 → 工单</a> 反馈。</p>',
             'dependency' => array('is_site_footer_widget', '==', 'true'),
         ),
 
@@ -1071,7 +1071,7 @@ CSF::createSection($prefix, array(
             'title'    => '全站底部版权信息',
             'sanitize' => false,
             'subtitle' => '自定义版权信息',
-            'default'  => _cao_old('site_copyright_text', 'Copyright © 2023 <a target="_blank" href="http://ritheme.com/">RiPro-V5 Theme</a> - All rights reserved'),
+            'default'  => _cao_old('site_copyright_text', ''),
         ),
 
         array(
@@ -1115,24 +1115,16 @@ CSF::createSection($prefix, array(
             ),
             'default' => array(
                 array(
-                    'title' => 'RiTheme主题官网',
-                    'href'  => 'https://ritheme.com/',
+                    'title' => '用户中心',
+                    'href'  => home_url('/user'),
                 ),
                 array(
-                    'title' => '日主题官网',
-                    'href'  => 'https://ritheme.com/',
+                    'title' => '会员介绍',
+                    'href'  => home_url('/vip-prices'),
                 ),
                 array(
-                    'title' => 'RiPro-V5主题官方',
-                    'href'  => 'https://ritheme.com/',
-                ),
-                array(
-                    'title' => '服务器推荐',
-                    'href'  => '/goto?url=https://www.aliyun.com/minisite/goods?userCode=u4kxbrjo',
-                ),
-                array(
-                    'title' => '免备案服务器',
-                    'href'  => '/goto?url=https://www.yisu.com/reg/?partner=2OPSd',
+                    'title' => '标签云',
+                    'href'  => home_url('/tags'),
                 ),
             ),
         ),
@@ -3039,22 +3031,6 @@ CSF::createSection($prefix, array(
             'type' => 'backup',
         ),
 
-    ),
-));
-
-CSF::createSection($prefix, array(
-    'title'  => '主题授权',
-    'fields' => array(
-        array(
-            'type'    => 'submessage',
-            'style'   => 'danger',
-            'content' => '<i class="fa fa-heart" style=" color: red; "></i> 感谢您使用本主题进行创作，请先填写ritheme.com个人中心您的授权ID和授权码点击保存验证。<i class="fa fa-heart" style=" color: red; "></i>
-  <br/>------授权错误会提示错误消息，成功则显示授权正常后刷新页面即可。</br></br><i class="fa fa-heart" style=" color: red; "></i> PS：承蒙您对本主题的喜爱，我们愿向小三一样，做大哥的女人，做大哥网站中最想日的一个。开发者不易，我们真诚的希望和感谢每一个真心建站运营的朋友能支持日系列的正版主题，更好的更用心的等你来调教。如此强大好用的日系列主题，包含支付等重要安全功能，我们希望用户一定要重视自己的数据安全，不要相信所谓破解等盗版，盗版无利不起早，一切以安全为己任。共同维护创造国内健康的WordPress使用环境。开发者油条敬上。',
-        ),
-        array(
-            'type'     => 'callback',
-            'function' => 'riadmin_license_page',
-        ),
     ),
 ));
 

@@ -5,7 +5,6 @@ defined('ABSPATH') || exit;
 #主题版本信息
 define('_THEME_VERSION', '10.5'); //主题版本
 define('_THEME_DEBUG', 0); //调试模式控制切勿开启
-define('_THEME_TOKEN', 'JFAkQnlES01YUUpEQ0tkVmZwbjk5NGw4VUtqMEVpaWpCMA=='); //主题授权TOKEN 切勿修改
 
 ###############################################################################
 
@@ -178,6 +177,7 @@ function load_ripto_theme_files( $is_debug = false ) {
         'template-tags.php',         // 主题功能标签
         'template-shop.php',         // 主题 shop
         'template-class.php',        // 主题 class
+        'template-open-source.php',  // 开源版前台链接对齐
         '/core/template-core.php'    // 主题 class
     );
 

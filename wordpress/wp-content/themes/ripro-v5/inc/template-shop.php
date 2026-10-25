@@ -137,24 +137,24 @@ function get_site_author_aff_rate() {
 function get_site_vip_options() {
     $options     = _cao('site_vip_options', array());
     $vip_options = array();
-
-    if (empty($options)) {
-        return $vip_options;
-    }
-    //定义天数
-    $vip_group = ['no','vip','boosvip'];
+    $vip_group   = array('no', 'vip', 'boosvip');
+    $default_names = array(
+        'no'      => __('普通用户', 'ripro'),
+        'vip'     => __('VIP会员', 'ripro'),
+        'boosvip' => __('永久VIP', 'ripro'),
+    );
 
     foreach ($vip_group as $key) {
-        $name = (isset($options[$key . '_name'])) ? $options[$key . '_name'] : '';
-        $downnum = (isset($options[$key . '_downnum'])) ? $options[$key . '_downnum'] : 0;
-        $desc = (isset($options[$key . '_desc'])) ? $options[$key . '_desc'] : '';
-        $desc = empty($desc) ? [] : explode("\n", $desc);
-        $vip_options[$key] = [
-            'key'     => $key, //标识
-            'name'    => esc_html($name), //名称
-            'desc'    => $desc, //介绍
-            'downnum' => absint($downnum), //下载次数
-        ];
+        $name    = (is_array($options) && isset($options[$key . '_name'])) ? $options[$key . '_name'] : $default_names[$key];
+        $downnum = (is_array($options) && isset($options[$key . '_downnum'])) ? $options[$key . '_downnum'] : 0;
+        $desc    = (is_array($options) && isset($options[$key . '_desc'])) ? $options[$key . '_desc'] : '';
+        $desc    = empty($desc) ? array() : explode("\n", $desc);
+        $vip_options[$key] = array(
+            'key'     => $key,
+            'name'    => esc_html($name),
+            'desc'    => $desc,
+            'downnum' => absint($downnum),
+        );
     }
     return $vip_options;
 }
@@ -262,7 +262,7 @@ function get_user_vip_type($user_id) {
     $vip_options = get_site_vip_options();
     $user_type   = get_user_meta($user_id, 'cao_user_type', true);
     if (empty($user_type) || !isset($vip_options[$user_type])) {
-        return $vip_options['no']['key'];
+        return isset($vip_options['no']['key']) ? $vip_options['no']['key'] : 'no';
     }
     $current_date = wp_date('Y-m-d');
     $vip_end_date = get_user_vip_end_date($user_id);
@@ -274,14 +274,14 @@ function get_user_vip_type($user_id) {
     }
 
     if ($user_type === 'vip' && $vip_end_date === '9999-09-09') {
-        return $vip_options['boosvip']['key'];
+        return isset($vip_options['boosvip']['key']) ? $vip_options['boosvip']['key'] : 'boosvip';
     }
 
     if ($user_type === 'vip' && $end_time > $current_time) {
-        return $vip_options['vip']['key'];
+        return isset($vip_options['vip']['key']) ? $vip_options['vip']['key'] : 'vip';
     }
 
-    return $vip_options['no']['key'];
+    return isset($vip_options['no']['key']) ? $vip_options['no']['key'] : 'no';
 }
 
 //获取用户VIP数据

@@ -56,7 +56,6 @@ services:
       # 本机挂载开发：后台更新/装主题不走 FTP
       WORDPRESS_CONFIG_EXTRA: |
         define('FS_METHOD', 'direct');
-        define('RIPRO_LOCAL_DOCKER', true);
     volumes:
       - ./wordpress:/var/www/html
       - ./php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
