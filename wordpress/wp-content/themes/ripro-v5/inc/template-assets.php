@@ -85,6 +85,15 @@ function zb_scripts() {
     // 加载字体图标样式
     wp_enqueue_style('csf-fa5', $cdn_src['fw'], array(), '5.15.4');
     wp_enqueue_style('csf-fa5-v4-shims', $cdn_src['fw4'], array(), '5.15.4');
+    $fa_base = get_template_directory_uri() . '/assets/css/font-awesome/webfonts/';
+    wp_register_style('ripro-fontawesome-faces', false, array('csf-fa5'), '5.15.4');
+    wp_enqueue_style('ripro-fontawesome-faces');
+    wp_add_inline_style(
+        'ripro-fontawesome-faces',
+        "@font-face{font-family:'Font Awesome 5 Brands';font-style:normal;font-weight:400;font-display:block;src:url('{$fa_base}fa-brands-400.woff2') format('woff2');}"
+        . "@font-face{font-family:'Font Awesome 5 Free';font-style:normal;font-weight:400;font-display:block;src:url('{$fa_base}fa-regular-400.woff2') format('woff2');}"
+        . "@font-face{font-family:'Font Awesome 5 Free';font-style:normal;font-weight:900;font-display:block;src:url('{$fa_base}fa-solid-900.woff2') format('woff2');}"
+    );
 
 
     //主题样式

@@ -154,10 +154,12 @@ class ZB_Pay {
         $request->openid       = isset($order_info['openid']) ? $order_info['openid'] : '';
         try {
             $result = $sdk->execute($request);
-            if (!isset($result['return_code']) || $result['return_code'] !== 'SUCCESS') {
+            if (!isset($result['return_code']) || $result['return_code'] !== 'SUCCESS' || empty($result['prepay_id'])) {
                 throw new Exception(isset($result['return_msg']) ? $result['return_msg'] : 'WeChat JSAPI error', 0);
             }
-            return $result;
+            $js            = new \Yurun\PaySDK\Weixin\JSAPI\Params\JSParams\Request();
+            $js->prepay_id = $result['prepay_id'];
+            return $sdk->execute($js);
         } catch (Exception $e) {
             $this->echo_pay_error('errorcode:', $e);
         }
@@ -284,7 +286,12 @@ class ZB_Pay {
         require_once get_template_directory() . '/inc/plugins/epay/EpayCore.class.php';
 
         $config_key = ($pay_type === 'wxpay') ? 'epay_weixin' : 'epay_alipay';
-        $config     = (array) _cao($config_key);
+        $config     = _cao($config_key);
+        if (!is_array($config) || $config === array()) {
+            $bundle = _cao('epay', array());
+            $slot   = ($pay_type === 'wxpay') ? 'weixin' : 'alipay';
+            $config = (is_array($bundle) && isset($bundle[$slot]) && is_array($bundle[$slot])) ? $bundle[$slot] : array();
+        }
         $pay_config = array_merge(
             array('pid' => '', 'key' => '', 'apiurl' => ''),
             $config

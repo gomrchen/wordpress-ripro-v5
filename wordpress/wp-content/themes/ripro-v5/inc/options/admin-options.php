@@ -2206,13 +2206,13 @@ CSF::createSection($prefix, array(
                         'type' => 'password',
                     ),
                 ),
-                // array(
-                //     'id'      => 'is_jsapi',
-                //     'type'    => 'switcher',
-                //     'title'   => 'JSAPI支付',
-                //     'label'   => '微信端内打开可以直接发起支付，开启此项需要登录注册里开启公众号登录，开启后网站用户在微信内登录后可以直接支付',
-                //     'default' => false,
-                // ),
+                array(
+                    'id'      => 'is_jsapi',
+                    'type'    => 'switcher',
+                    'title'   => 'JSAPI支付',
+                    'label'   => '微信端内打开可以直接发起支付，开启此项需要登录注册里开启公众号登录，开启后网站用户在微信内登录后可以直接支付',
+                    'default' => false,
+                ),
                 array(
                     'id'      => 'is_mobile',
                     'type'    => 'switcher',

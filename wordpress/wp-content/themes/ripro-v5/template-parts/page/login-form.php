@@ -190,7 +190,8 @@ $is_lostpwd_action = (get_query_var('uc-lostpwd-page') == 1) ? true : false;
 			<a href="<?php echo get_oauth_permalink('qq');?>" class="btn-qq-login btn btn-sm btn-info"><i class="fab fa-qq me-1"></i><?php _e('QQ登录', 'ripro'); ?></a>
 			<?php endif;?>
 			<?php if (_cao('is_sns_weixin',false)) :?>
-				<?php if (_cao('sns_weixin')['sns_weixin_mod'] == 'mp') :?>
+				<?php $sns_weixin = ripro_v5_get_sns_weixin(); ?>
+				<?php if ($sns_weixin['sns_weixin_mod'] == 'mp') :?>
 					<a href="<?php echo get_oauth_permalink('mpweixin');?>" class="btn-mpweixin-login btn btn-sm btn-success"><i class="fab fa-weixin me-1"></i><?php _e('微信登录', 'ripro'); ?></a>
 				<?php else :?>
 					<a href="<?php echo get_oauth_permalink('weixin');?>" class="btn-weixin-login btn btn-sm btn-success"><i class="fab fa-weixin me-1"></i><?php _e('微信登录', 'ripro'); ?></a>

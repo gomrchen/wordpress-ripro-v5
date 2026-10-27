@@ -1087,6 +1087,17 @@ function zb_custom_pagination($pagenum = 0, $max_num_pages = 0) {
 
 }
 
+function ripro_v5_get_sns_weixin() {
+    $opt = _cao('sns_weixin', array());
+    if (!is_array($opt)) {
+        $opt = array();
+    }
+    if (empty($opt['sns_weixin_mod'])) {
+        $opt['sns_weixin_mod'] = 'mp';
+    }
+    return $opt;
+}
+
 function is_weixin_visit() {
     if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
         return true;

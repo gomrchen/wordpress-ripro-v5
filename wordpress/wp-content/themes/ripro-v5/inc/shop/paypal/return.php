@@ -6,7 +6,8 @@
 header('Content-type:text/html; Charset=utf-8');
 
 if (!_cao('is_paypal', false)) {
-    exit('PayPal NOT');
+    wp_redirect(home_url('/'));
+    exit;
 }
 
 require_once get_template_directory() . '/inc/plugins/paypal/paypal.php';

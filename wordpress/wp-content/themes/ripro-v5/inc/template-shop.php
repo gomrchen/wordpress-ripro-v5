@@ -1405,8 +1405,19 @@ function zb_get_request_pay($order_data) {
     case 'weixinpay':
         # 微信官方...
         $config = _cao('weixinpay');
+        $openid = '';
+        if (is_user_logged_in()) {
+            $openid = get_user_meta(get_current_user_id(), 'open_mpweixin_openid', true);
+            if (!$openid) {
+                $openid = get_user_meta(get_current_user_id(), 'open_weixin_openid', true);
+            }
+        }
 
-        if (wp_is_mobile() && !empty($config['is_mobile']) && !is_weixin_visit()) {
+        if (!empty($config['is_jsapi']) && is_weixin_visit() && $openid) {
+            $result['method']   = 'jsapi';
+            $order_data['openid'] = $openid;
+            $pay_url            = $ZB_Pay->weixin_jsapi_pay($order_data);
+        } elseif (wp_is_mobile() && !empty($config['is_mobile']) && !is_weixin_visit()) {
             $result['method'] = 'url';
             $pay_url = $ZB_Pay->weixin_h5_pay($order_data);
         } else {
